@@ -1,18 +1,18 @@
-// import React from 'react';
-// import ReactDOM from 'react-dom';
-// import App from './App';
-// import registerServiceWorker from './registerServiceWorker';
-
-// ReactDOM.render(<App />, document.getElementById('root'));
-// registerServiceWorker();
-
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+import registerServiceWorker from './registerServiceWorker';
 import {createStore,combineReducers} from "redux";
+import {Provider} from "react-redux";
+
+
+
 const initialstate={ //กำหนด state
     result:15000,
     value:[]
 }
 const userReducer = (
-    state = {name:"test",age:22},action)=>{
+    state = {name:"ss",age:22},action)=>{
         switch (action.type) {
         case "SETNAME":
                state={
@@ -58,29 +58,21 @@ const employeeReducer = (state=initialstate,action)=>{
     }
     return state;
 }
-const store=createStore(combineReducers({employeeReducer,userReducer}));
+const store=createStore(combineReducers({emp:employeeReducer,user:userReducer}));
 
 store.subscribe(()=>{
     console.log("update store:",store.getState())
-    console.log("update store:",store.getState().value)
 });
-store.dispatch({
-    type:"ADD",
-    payload:15000
-});
-store.dispatch({
-    type:"ADD",
-    payload:15000
-});
-store.dispatch({
-    type:"SUBTRACT",
-    payload:10000
-});
-store.dispatch({
-    type:"SETNAME",
-    payload:"Redux"
-})
-store.dispatch({
-    type:"SETAGE",
-    payload:24
-})
+// store.dispatch({
+//     type:"ADD",
+//     payload:15000
+// });
+
+
+
+ReactDOM.render(
+<Provider store={store}>
+    <App />
+</Provider>
+,
+document.getElementById('root'));
