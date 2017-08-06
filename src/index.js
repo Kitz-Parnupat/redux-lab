@@ -6,14 +6,30 @@
 // ReactDOM.render(<App />, document.getElementById('root'));
 // registerServiceWorker();
 
-import {createStore} from "redux"
-const reducer = (state,action)=>{
+import {createStore} from "redux";
+const initialstate={ //กำหนด state
+    result:15000,
+    value:[]
+}
+const reducer = (state=initialstate,action)=>{
     switch (action.type) {
         case "ADD":
-                state+=action.payload;
+               state={
+                //    ...state
+                // หรือ 
+                // result:state.result,
+                // value:state.value
+                ...state,
+                    result:state.result += action.payload,
+                    value:[...state.value,action.payload]
+               }
             break;
         case "SUBTRACT":
-                state-=action.payload;
+                  state={
+                ...state,
+                    result:state.result -= action.payload,
+                    value:[...state.value,action.payload]
+               }
             break;
     
         default:
@@ -21,15 +37,18 @@ const reducer = (state,action)=>{
     }
     return state;
 }
-const store=createStore(reducer,15000);
+const store=createStore(reducer);
 
 store.subscribe(()=>{
     console.log("update store:",store.getState())
-})
-
+});
 store.dispatch({
     type:"ADD",
-    payload:500
+    payload:15000
+});
+store.dispatch({
+    type:"ADD",
+    payload:15000
 });
 store.dispatch({
     type:"SUBTRACT",
