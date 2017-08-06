@@ -6,12 +6,33 @@
 // ReactDOM.render(<App />, document.getElementById('root'));
 // registerServiceWorker();
 
-import {createStore} from "redux";
+import {createStore,combineReducers} from "redux";
 const initialstate={ //กำหนด state
     result:15000,
     value:[]
 }
-const reducer = (state=initialstate,action)=>{
+const userReducer = (
+    state = {name:"test",age:22},action)=>{
+        switch (action.type) {
+        case "SETNAME":
+               state={
+                ...state,
+                    name:action.payload
+               }
+            break;
+        case "SETAGE":
+                  state={
+                ...state,
+                  age:action.payload
+               }
+            break;
+    
+        default:
+            break;
+    }
+    return state;
+}
+const employeeReducer = (state=initialstate,action)=>{
     switch (action.type) {
         case "ADD":
                state={
@@ -37,10 +58,11 @@ const reducer = (state=initialstate,action)=>{
     }
     return state;
 }
-const store=createStore(reducer);
+const store=createStore(combineReducers({employeeReducer,userReducer}));
 
 store.subscribe(()=>{
     console.log("update store:",store.getState())
+    console.log("update store:",store.getState().value)
 });
 store.dispatch({
     type:"ADD",
@@ -54,3 +76,11 @@ store.dispatch({
     type:"SUBTRACT",
     payload:10000
 });
+store.dispatch({
+    type:"SETNAME",
+    payload:"Redux"
+})
+store.dispatch({
+    type:"SETAGE",
+    payload:24
+})
